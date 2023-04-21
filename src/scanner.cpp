@@ -26,11 +26,15 @@ char Scanner::advance (size_t amount) {
 
 size_t Scanner::seek (char c) {
     size_t pos = cursor;
-    while (pos < len) {
+    while (pos < src.size()) {
         if (src[pos] == c) {
             return pos - cursor;
         }
         pos++;
     }
-    return len;
+    return src.size();
+}
+
+bool Scanner::finished() {
+    return cursor == src.length();
 }

@@ -1,15 +1,19 @@
-#ifndef PDX_PARSE_SCANNER
-#define PDX_PARSE_SCANNER
+#ifndef PDXPARSE_SCANNER
+#define PDXPARSE_SCANNER
 
 #include <stddef.h>
+#include <string>
 
+/**
+ * @brief Helper class for Lexing a string
+ * 
+ */
 class Scanner {
     public:
-    size_t cursor;
-    size_t row;
-    size_t col;
-    size_t len;
-    char* src;
+    size_t cursor = 0;
+    size_t row = 0;
+    size_t col = 0;
+    std::string src;
 
     /**
      * @brief Query character cursor is at.
@@ -48,6 +52,14 @@ class Scanner {
      * @return size_t Offset from cursor or len if none.
      */
     size_t seek (char c); 
+
+    /**
+     * @brief Returns whether Scanner has reached EOF.
+     * 
+     * @return true 
+     * @return false 
+     */
+    bool finished ();
 };
 
 #endif
