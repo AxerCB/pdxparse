@@ -8,10 +8,16 @@
 #include <stdint.h>
 
 class Date {
+    public:
     uint8_t day;
     uint8_t month;
     uint16_t year;
 
+    /**
+     * @brief Constructs date at 1.1.1
+     * 
+     */
+    Date();
     /**
      * @brief Construct a new Date from string.
      * Starting from 1.1.1

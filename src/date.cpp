@@ -1,5 +1,11 @@
 #include "../include/date.hpp"
 
+Date::Date() {
+    this->year = 1;
+    this->month = 1;
+    this->day = 1;
+}
+
 Date::Date(std::string dt) {
     size_t count = 0;
     size_t pos[2];

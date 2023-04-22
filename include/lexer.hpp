@@ -2,36 +2,45 @@
 #define PDXPARSE_LEXER
 
 #include <stdexcept>
-#include <iostream>
 #include <vector>
 #include <string>
 
 #include "scanner.hpp"
+#include "date.hpp"
 
-struct Token {
+class Token {
+    public:
     size_t id;
     size_t pos;
     size_t row;
     size_t col;
+    size_t len;
+
+    Token (Scanner scanner);
+    Token ();
+
+    /**
+     * @brief String representation of token.
+     * 
+     * @return std::string { row:col, id, len }
+     */
+    std::string toString ();
 };
 
+template <typename T>
 class Lexer {
     public:
-    std::vector<bool (*)(Scanner)> rules;
-    std::vector<Token> tokens;
+    /**
+     * @brief Vector of function pointers for lexical rules of language.
+     * @param Scanner Helper class for traversal input.
+     * @param T& Reference to Token to be consumed.
+     * @return bool Whether rule was applied to input.
+     */
+    std::vector<bool (*)(Scanner, T&)> rules;
+    std::vector<T> tokens;
     Scanner scanner;
 
-    void read (std::string path);
-
-    bool lex () {
-        for (int i = 0; i < rules.size(); i++) {
-            if (rules[i](scanner)) {
-                return true;
-            }
-        }
-        throw std::runtime_error("Unexpected token " + std::string(1, scanner.peek()) + " at" + std::to_string(scanner.row) + ":" + std::to_string(scanner.col));
-        return false;
-    }
+    bool lex ();
 };
 
 #endif

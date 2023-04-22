@@ -1,29 +1,28 @@
 #include "../include/lexer.hpp"
 
-void Lexer::read (std::string path) {
-    FILE* file = fopen(path.c_str(), "r");
+Token::Token () {}
 
-    fseek(file, 0, SEEK_END);
-    size_t len = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    char buf[len+1];
-
-    fread(buf, 1, len, file);
-    buf[len] = '\0';
-
-    fclose(file);
-
-    this->scanner = Scanner();
-    this->scanner.src = std::string(buf);
+Token::Token (Scanner scanner) {
+    this->pos = scanner.cursor;
+    this->col = scanner.col;
+    this->row = scanner.row;
+    this->len = 0;
 }
 
-bool Lexer::lex () {
+std::string Token::toString () {
+    return "{ " +  std::to_string(row) + ":" + std::to_string(col) + ", " + std::to_string(id) + ", " + std::to_string(len) + " }";
+}
+
+template <class T>
+bool Lexer<T>::lex () {
+    T& token;
     for (int i = 0; i < rules.size(); i++) {
-        if (rules[i](scanner)) {
+        if (rules[i](scanner, token)) {
+            tokens.push_back(token);
             return true;
         }
     }
     throw std::runtime_error("Unexpected token " + std::string(1, scanner.peek()) + " at" + std::to_string(scanner.row) + ":" + std::to_string(scanner.col));
     return false;
 }
+
