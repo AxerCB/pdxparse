@@ -42,7 +42,15 @@ class ScriptLexer: public Lexer<ScriptToken> {
     ScriptLexer ();
 
     /**
-     * @brief Rule for string literal: \"(.+)\"
+     * @brief Throws when EOF reached mid token.
+     * @throws std::runtime_error
+     * @param scanner 
+     * @param token 
+     */
+    static bool check_eof (Scanner scanner, ScriptToken token);
+
+    /**
+     * @brief Rule for string literal: "(.+)"
      * Lexes any character except string terminator in between two quotation marks.
      * @note Not valid for languages where line break after first " is lexically incorrect.
      * @param scanner Input string.
@@ -51,6 +59,26 @@ class ScriptLexer: public Lexer<ScriptToken> {
      * @return false Input was not accepted by rule.
      */
     static bool string (Scanner scanner, ScriptToken& token);
+
+    /**
+     * @brief Rule for single line comments: #.+([LF]|[CR])
+     * @note Lexer supports LF, CR, and CRLF line breaks.
+     * @param scanner 
+     * @param token 
+     * @return true 
+     * @return false 
+     */
+    static bool comment (Scanner scanner, ScriptToken& token);
+
+    /**
+     * @brief Rule for signed integer, float, or date literals
+     * 
+     * @param scanner 
+     * @param token 
+     * @return true 
+     * @return false 
+     */
+    static bool number (Scanner scanner, ScriptToken& token);
 };
 
 #endif
