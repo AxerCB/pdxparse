@@ -35,7 +35,8 @@ class ScriptLexer: public Lexer<ScriptToken> {
         DATE,
         IDENTIFIER,
         SEPERATOR,
-        OPERATOR
+        OPERATOR,
+        COMMENT
     };
 
     ScriptLexer ();
